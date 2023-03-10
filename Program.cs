@@ -10,11 +10,23 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filepath = System.AppContext.BaseDirectory + "test2.jpg";
+        string imagefile;
+        string outputfile;
+        if(args.Length < 2) {
+            // Console.WriteLine("invalid arguments");
+            // Console.WriteLine("expected <image> <outputfile>");
+            imagefile = System.AppContext.BaseDirectory + "\\"+"in.jpg";
+            outputfile = System.AppContext.BaseDirectory + "\\"+"out.txt";
+        } else {
+            imagefile = System.AppContext.BaseDirectory + "\\"+args[0];
+            outputfile = System.AppContext.BaseDirectory + "\\"+args[1];
+        }
+        
+
         byte[,] arr = new byte[0, 0];
-        Console.WriteLine("PATH: " + filepath);
+        Console.WriteLine("IMAGE: " + imagefile);
         try {
-        using (var image = new Bitmap(System.Drawing.Image.FromFile(filepath)))
+        using (var image = new Bitmap(System.Drawing.Image.FromFile(imagefile)))
         {
             int width = image.Width;
             int height = image.Height;
@@ -24,10 +36,10 @@ class Program
             for(int i = 0; i < height; i++) {
                 for(int j = 0; j < width; j++) {
                     //Console.WriteLine("-------------------");
-                    var argb = image.GetPixel(j, i);
-                    byte r = (byte) (argb.ToArgb() >> 16 & 255);
-                    byte g = (byte) (argb.ToArgb() >> 8 & 255);
-                    byte b = (byte) (argb.ToArgb() & 255);
+                    int argb = image.GetPixel(j, i).ToArgb();
+                    byte r = (byte) (argb >> 16 & 255);
+                    byte g = (byte) (argb >> 8 & 255);
+                    byte b = (byte) (argb & 255);
                     // Console.WriteLine("r: " + r);
                     // Console.WriteLine("g: " + g);
                     // Console.WriteLine("b: " + b);
@@ -55,7 +67,7 @@ class Program
             Console.WriteLine("ERROR: " + e);
         }
         try {
-            using(FileStream fs = new FileStream("convertedTest2.txt", FileMode.Create, FileAccess.Write)) {
+            using(FileStream fs = new FileStream(outputfile, FileMode.Create, FileAccess.Write)) {
                 for(int i = 0; i < arr.GetLength(0); i++) {
                     for(int j = 0; j < arr.GetLength(1); j++) {
                         fs.WriteByte(arr[i, j]);
