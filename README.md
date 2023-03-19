@@ -8,4 +8,9 @@
 
 # rules for creating worlds
 - create new image in any image editing program
-- <u>black color</u> will convert to walls of the world
+- ```black pixels``` will convert to WALLS of the world '#'
+- ```green pixels``` will convert to COINS 'O'
+- ```purple pixels``` i.e. rgb(128, 0 , 255) will convert to exit PORTAL 'X'
+- ```red pixels``` will convert to ENEMY tracks (single red pixels convert to non moving enemies)
+- choose a smaller image size e.g. 20x50 pixels
+- image file needs to be .jpg format
