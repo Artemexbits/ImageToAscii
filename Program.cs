@@ -105,6 +105,10 @@ class Program
                     // Console.WriteLine("b: " + b);
                     // Console.WriteLine("argb: " + argb.ToString());
                     // Console.WriteLine("-------------------");
+                    //int grey = (r+g+b)/3;
+                    
+                    //arr[i, j] = (byte)colorToChar(grey);
+
                     if(ablack(r,g,b, 10)) {
                         arr[i, j] = (int)'#';
                     } else
@@ -171,5 +175,34 @@ class Program
         } else {
             return false;
         }
+    }
+
+    private static char colorToChar(int grey) {
+
+        if(grey <= 31) {
+            return '@';
+        } else
+        if(grey > 31 && grey <= 31*2) {
+            return '#';
+        } else
+        if(grey > 31*2 && grey <= 31*3) {
+            return 'X';
+        } else 
+        if(grey > 31*3 && grey <= 31*4) {
+            return 'I';
+        } else 
+        if(grey > 31*4 && grey <= 31*5) {
+            return '+';
+        } else 
+        if(grey > 31*5 && grey <= 31*6) {
+            return ':';
+        } else 
+        if(grey > 31*6 && grey <= 31*7) {
+            return '.';
+        } else 
+        if(grey > 31*7) {
+            return ' ';
+        }
+        return '#';
     }
 }
