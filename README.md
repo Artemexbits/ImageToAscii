@@ -8,4 +8,4 @@
 
 # rules for creating worlds
 - create new image in any image editing program
-- <b>black color</b> will convert to walls of the world
+- <u>black color</u> will convert to walls of the world
