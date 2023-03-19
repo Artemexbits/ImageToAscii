@@ -12,14 +12,16 @@ class Program
     {
         string imagefile;
         string outputfile;
+        const string IMG_FILENAME = "in.jpg";
+        const string OUT_FILENAME = "out.txt";
         if(args.Length < 2) {
             // Console.WriteLine("invalid arguments");
             // Console.WriteLine("expected <image> <outputfile>");
-            imagefile = System.AppContext.BaseDirectory + "\\"+"in.jpg";
-            outputfile = System.AppContext.BaseDirectory + "\\"+"out.txt";
+            imagefile = Directory.GetCurrentDirectory() + "\\" + IMG_FILENAME;
+            outputfile = Directory.GetCurrentDirectory() + "\\" + OUT_FILENAME;
         } else {
-            imagefile = System.AppContext.BaseDirectory + "\\"+args[0];
-            outputfile = System.AppContext.BaseDirectory + "\\"+args[1];
+            imagefile = Directory.GetCurrentDirectory() + "\\" + args[0];
+            outputfile = Directory.GetCurrentDirectory() + "\\" + args[1];
         }
         
 
