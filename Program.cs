@@ -10,7 +10,7 @@ using System.Linq;
 namespace ImageToAscii;
 class Program
 {
-    static void Main(string[] args)
+    static async void Main(string[] args)
     {
         string[] image_paths = new string[0];
         string image_dir_path = "";
@@ -45,31 +45,38 @@ class Program
         }
 
 
-
+        List<Task<bool>> convert_tasks = new List<Task<bool>>();
         for(int i = 0; i < image_paths.Length; i++) {
-            byte[,] arr = extractCharsFromImage(image_paths[i]);
-            string outputfile = image_paths[i];
+            convert_tasks.Add(convertToFile(image_paths[i], output_dir_path));
+        } 
+        await Task.WhenAll(convert_tasks);
+    }
+
+    private static async Task<bool> convertToFile(string image_path, string output_dir_path) {
+        try {
+            byte[,] arr = extractCharsFromImage(image_path);
+            string outputfile = image_path;
             if(!string.IsNullOrWhiteSpace(output_dir_path)) {
                 outputfile =  output_dir_path + outputfile.Substring(outputfile.LastIndexOf("\\"));
             }
             writeWorldFile(outputfile.Replace(".jpg", ".txt"), arr);
-        }        
+            return true;
+        } catch (Exception) {
+            return false;
+        }
     }
 
     private static void writeWorldFile(string outputfile, byte[,] arr) {
         Console.WriteLine("writing: " + outputfile);
-        try {
-            using(FileStream fs = new FileStream(outputfile, FileMode.Create, FileAccess.Write)) {
-                for(int i = 0; i < arr.GetLength(0); i++) {
-                    for(int j = 0; j < arr.GetLength(1); j++) {
-                        fs.WriteByte(arr[i, j]);
-                    }
-                    fs.WriteByte(10);
+        
+        using(FileStream fs = new FileStream(outputfile, FileMode.Create, FileAccess.Write)) {
+            for(int i = 0; i < arr.GetLength(0); i++) {
+                for(int j = 0; j < arr.GetLength(1); j++) {
+                    fs.WriteByte(arr[i, j]);
                 }
-                fs.Flush();
+                fs.WriteByte(10);
             }
-        } catch (Exception e) {
-            Console.WriteLine("ERROR: " + e);
+            fs.Flush();
         }
     }
 
