@@ -6,7 +6,7 @@
 # run release.bat to release the project to an .exe file
 # released .exe file can be found in bin\Release\net7.0\win-x64\publish
 
-# rules for creating worlds
+# rules for creating world images
 - create new image in any image editing program
 - ```black pixels``` will convert to WALLS of the world '#'
 - ```green pixels``` will convert to COINS 'O'
