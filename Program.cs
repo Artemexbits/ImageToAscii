@@ -131,10 +131,6 @@ class Program
         }
         return arr;
     }
-
-    private static bool awhite(byte r, byte g, byte b) {
-        return false;
-    }
     private static bool ablack(int r, int g, int b, int d) {
         if(r < d*2 && g < d*2 && b < d*2) {
             //Console.WriteLine("black");
