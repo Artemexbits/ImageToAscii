@@ -19,7 +19,6 @@ class Program
             image_dir_path = Directory.GetCurrentDirectory() + "\\" + args[0];
             Console.WriteLine("image directory: " + image_dir_path);
             image_paths = Directory.GetFiles(image_dir_path, "*.jpg");
-            Console.WriteLine("path1: " + image_paths[0]);
         } else
         if(args.Length == 2) {
             image_dir_path = Directory.GetCurrentDirectory() + "\\" + args[0];
@@ -61,8 +60,6 @@ class Program
                 outputfile =  output_dir_path + outputfile.Substring(outputfile.LastIndexOf("\\"));
             }
             writeWorldFile(outputfile.Replace(".jpg", ".txt"), arr);
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("converted: " + outputfile);
         } catch (Exception) {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"ERROR: converting {image_path} failed");
@@ -80,6 +77,9 @@ class Program
             }
             fs.Flush();
         }
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("created: " + outputfile);
+        Console.ForegroundColor = ConsoleColor.White;
     }
 
     private static byte[,] extractCharsFromImage(string imagefile) {
