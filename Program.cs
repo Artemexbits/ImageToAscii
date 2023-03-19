@@ -16,8 +16,6 @@ class Program
         string image_dir_path = "";
         string output_dir_path = "";
         if(args.Length == 1) {
-            // Console.WriteLine("invalid arguments");
-            // Console.WriteLine("expected <image> <outputfile>");
             image_dir_path = Directory.GetCurrentDirectory() + "\\" + args[0];
             Console.WriteLine("image directory: " + image_dir_path);
             image_paths = Directory.GetFiles(image_dir_path, "*.jpg");
