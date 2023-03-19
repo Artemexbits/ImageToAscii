@@ -54,7 +54,7 @@ class Program
                         arr[i, j] = (int)'Z';
                     } else 
                     if(agreen(r,g,b, 10)) {
-                        arr[i, j] = (int)'V';
+                        arr[i, j] = (int)'O';
                     } else
                     if(apurple(r,g,b, 10)) {
                         arr[i, j] = (int)'X';
