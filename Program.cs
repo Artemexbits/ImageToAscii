@@ -116,6 +116,9 @@ class Program
                     } else
                     if(apurple(r,g,b, 10)) {
                         arr[i, j] = (int)'X';
+                    } else
+                    if(ablue(r,g,b, 10)) {
+                        arr[i, j] = (int)'Y';
                     } else {
                         arr[i, j] = (int)' ';
                     }
