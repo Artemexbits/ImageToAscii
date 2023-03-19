@@ -10,7 +10,7 @@ using System.Linq;
 namespace ImageToAscii;
 class Program
 {
-    static async void Main(string[] args)
+    static void Main(string[] args)
     {
         string[] image_paths = new string[0];
         string image_dir_path = "";
@@ -44,15 +44,16 @@ class Program
             }
         }
 
+        Parallel.For(0, image_paths.Length, i => convertToFile(image_paths[i], output_dir_path));
 
-        List<Task<bool>> convert_tasks = new List<Task<bool>>();
-        for(int i = 0; i < image_paths.Length; i++) {
-            convert_tasks.Add(convertToFile(image_paths[i], output_dir_path));
-        } 
-        await Task.WhenAll(convert_tasks);
+        // List<Task<bool>> convert_tasks = new List<Task<bool>>();
+        // for(int i = 0; i < image_paths.Length; i++) {
+        //     convert_tasks.Add(convertToFile(image_paths[i], output_dir_path));
+        // } 
+        // await Task.WhenAll(convert_tasks);
     }
 
-    private static async Task<bool> convertToFile(string image_path, string output_dir_path) {
+    private static void convertToFile(string image_path, string output_dir_path) {
         try {
             byte[,] arr = extractCharsFromImage(image_path);
             string outputfile = image_path;
@@ -60,15 +61,16 @@ class Program
                 outputfile =  output_dir_path + outputfile.Substring(outputfile.LastIndexOf("\\"));
             }
             writeWorldFile(outputfile.Replace(".jpg", ".txt"), arr);
-            return true;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("converted: " + outputfile);
         } catch (Exception) {
-            return false;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"ERROR: converting {image_path} failed");
         }
+        Console.ForegroundColor = ConsoleColor.White;
     }
 
     private static void writeWorldFile(string outputfile, byte[,] arr) {
-        Console.WriteLine("writing: " + outputfile);
-        
         using(FileStream fs = new FileStream(outputfile, FileMode.Create, FileAccess.Write)) {
             for(int i = 0; i < arr.GetLength(0); i++) {
                 for(int j = 0; j < arr.GetLength(1); j++) {
@@ -81,7 +83,7 @@ class Program
     }
 
     private static byte[,] extractCharsFromImage(string imagefile) {
-        Console.WriteLine("converting: " + imagefile);
+        Console.WriteLine("loading: " + imagefile);
         byte[,] arr = new byte[0, 0];
         try {
         using (var image = new Bitmap(System.Drawing.Image.FromFile(imagefile)))
