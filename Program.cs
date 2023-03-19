@@ -12,23 +12,72 @@ class Program
 {
     static void Main(string[] args)
     {
-        string imagefile;
-        string outputfile;
-        const string IMG_FILENAME = "in.jpg";
-        const string OUT_FILENAME = "out.txt";
-        if(args.Length < 2) {
+        string[] image_paths = new string[0];
+        string image_dir_path = "";
+        string output_dir_path = "";
+        if(args.Length == 1) {
             // Console.WriteLine("invalid arguments");
             // Console.WriteLine("expected <image> <outputfile>");
-            imagefile = Directory.GetCurrentDirectory() + "\\" + IMG_FILENAME;
-            outputfile = Directory.GetCurrentDirectory() + "\\" + OUT_FILENAME;
-        } else {
-            imagefile = Directory.GetCurrentDirectory() + "\\" + args[0];
-            outputfile = Directory.GetCurrentDirectory() + "\\" + args[1];
-        }
-        
+            image_dir_path = Directory.GetCurrentDirectory() + "\\" + args[0];
+            Console.WriteLine("image directory: " + image_dir_path);
+            image_paths = Directory.GetFiles(image_dir_path, "*.jpg");
+            Console.WriteLine("path1: " + image_paths[0]);
+        } else
+        if(args.Length == 2) {
+            image_dir_path = Directory.GetCurrentDirectory() + "\\" + args[0];
+            Console.WriteLine("image directory: " + image_dir_path);
+            image_paths = Directory.GetFiles(image_dir_path, "*.jpg");
 
+            output_dir_path = Directory.GetCurrentDirectory() + "\\" + args[1];
+            Console.WriteLine("output directory: " + output_dir_path);
+            if(!Directory.Exists(output_dir_path)) {
+                Directory.CreateDirectory(output_dir_path);
+            }
+        } else 
+        if(args.Length == 0) {
+            image_dir_path = Directory.GetCurrentDirectory();
+            Console.WriteLine("image directory: " + image_dir_path);
+            image_paths = Directory.GetFiles(image_dir_path, "*.jpg");
+
+            output_dir_path = Directory.GetCurrentDirectory();
+            Console.WriteLine("output directory: " + output_dir_path);
+            if(!Directory.Exists(output_dir_path)) {
+                Directory.CreateDirectory(output_dir_path);
+            }
+        }
+
+
+
+        for(int i = 0; i < image_paths.Length; i++) {
+            byte[,] arr = extractCharsFromImage(image_paths[i]);
+            string outputfile = image_paths[i];
+            if(!string.IsNullOrWhiteSpace(output_dir_path)) {
+                outputfile =  output_dir_path + outputfile.Substring(outputfile.LastIndexOf("\\"));
+            }
+            writeWorldFile(outputfile.Replace(".jpg", ".txt"), arr);
+        }        
+    }
+
+    private static void writeWorldFile(string outputfile, byte[,] arr) {
+        Console.WriteLine("writing: " + outputfile);
+        try {
+            using(FileStream fs = new FileStream(outputfile, FileMode.Create, FileAccess.Write)) {
+                for(int i = 0; i < arr.GetLength(0); i++) {
+                    for(int j = 0; j < arr.GetLength(1); j++) {
+                        fs.WriteByte(arr[i, j]);
+                    }
+                    fs.WriteByte(10);
+                }
+                fs.Flush();
+            }
+        } catch (Exception e) {
+            Console.WriteLine("ERROR: " + e);
+        }
+    }
+
+    private static byte[,] extractCharsFromImage(string imagefile) {
+        Console.WriteLine("converting: " + imagefile);
         byte[,] arr = new byte[0, 0];
-        Console.WriteLine("IMAGE: " + imagefile);
         try {
         using (var image = new Bitmap(System.Drawing.Image.FromFile(imagefile)))
         {
@@ -70,19 +119,7 @@ class Program
         } catch (Exception e) {
             Console.WriteLine("ERROR: " + e);
         }
-        try {
-            using(FileStream fs = new FileStream(outputfile, FileMode.Create, FileAccess.Write)) {
-                for(int i = 0; i < arr.GetLength(0); i++) {
-                    for(int j = 0; j < arr.GetLength(1); j++) {
-                        fs.WriteByte(arr[i, j]);
-                    }
-                    fs.WriteByte(10);
-                }
-                fs.Flush();
-            }
-        } catch (Exception e) {
-            Console.WriteLine("ERROR: " + e);
-        }
+        return arr;
     }
 
     private static bool awhite(byte r, byte g, byte b) {
