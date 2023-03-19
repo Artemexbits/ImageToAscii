@@ -2,3 +2,4 @@ obj/
 bin/ 
 *.jpg
 imageResizingCode.txt
+tests/
