@@ -10,6 +10,7 @@
 - create new image in any image editing program
 - ```black pixels``` will convert to wall '#'
 - ```green pixels``` will convert to coin 'O'
+- ```blue pixels``` will convert to entry-portal 'Y'
 - ```purple pixels``` i.e. rgb(128, 0 , 255) will convert to exit-portal 'X'
 - ```red pixels``` will convert to enemy tracks 'Z' (single red pixels convert to non moving enemies)
 - choose a small image size e.g. 20x50 pixels
